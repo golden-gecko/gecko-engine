@@ -1,5 +1,11 @@
 #pragma once
 
+#include <iostream>
+#include <map>
+#include <memory>
+#include <string>
+#include <vector>
+
 #pragma warning(push, 0)
 
 #include <Ogre.h>

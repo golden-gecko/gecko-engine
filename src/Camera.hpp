@@ -16,6 +16,7 @@ namespace Gecko
         Ogre::Camera* getCamera() const;
 
         void setPosition(const Ogre::Vector3f& position);
+        void setSpeed(float speed);
 
         void lookAt(const Ogre::Vector3f& position);
         void move(const Ogre::Vector3f& position);

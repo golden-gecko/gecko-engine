@@ -37,6 +37,11 @@ namespace Gecko
         sceneNode->setPosition(position);
     }
 
+    void Camera::setSpeed(float speed)
+    {
+        this->speed = speed;
+    }
+
     void Camera::lookAt(const Ogre::Vector3f& position)
     {
         sceneNode->lookAt(position, Ogre::Node::TransformSpace::TS_PARENT);
