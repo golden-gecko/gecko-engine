@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 4.2)
 
-project(ogre-tutorial)
+project(gecko-engine)
 
 file(GLOB_RECURSE HEADER_FILES ${CMAKE_SOURCE_DIR}/src/*.hpp)
 file(GLOB_RECURSE SOURCE_FILES ${CMAKE_SOURCE_DIR}/src/*.cpp)

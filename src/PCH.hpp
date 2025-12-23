@@ -1,7 +1,5 @@
 #pragma once
 
-#include <iostream>
-
 #pragma warning(push, 0)
 
 #include <Ogre.h>
