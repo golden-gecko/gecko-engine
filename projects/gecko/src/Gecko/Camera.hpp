@@ -9,14 +9,9 @@ namespace Gecko
     class Camera : public Ogre::Singleton<Camera>
     {
     public:
-        Camera(std::weak_ptr<Scene> scene, const std::string& name);
+        Camera(Scene* scene, const std::string& name);
 
-        ~Camera();
-
-        Ogre::Camera* getCamera() const;
-
-        void setPosition(const Ogre::Vector3f& position);
-        void setSpeed(float speed);
+        virtual ~Camera();
 
         void lookAt(const Ogre::Vector3f& position);
         void move(const Ogre::Vector3f& position);
@@ -24,10 +19,17 @@ namespace Gecko
 
         void update(float time);
 
+        Ogre::SceneManager* getSceneManager() const;
+        Ogre::Camera* getCamera() const;
+        Ogre::SceneNode* getSceneNode() const;
+
+        void setPosition(const Ogre::Vector3f& position);
+        void setSpeed(float speed);
+
     protected:
-        Ogre::SceneManager* sceneManager;
-        Ogre::Camera* camera;
-        Ogre::SceneNode* sceneNode;
+        Ogre::SceneManager* sceneManager = nullptr;
+        Ogre::Camera* camera = nullptr;
+        Ogre::SceneNode* sceneNode = nullptr;
 
         float speed = 100.0f;
     };

@@ -1,3 +1,7 @@
 build
 media
-
+*.dll
+*.exe
+*.lib
+*.mesh
+*.pdb

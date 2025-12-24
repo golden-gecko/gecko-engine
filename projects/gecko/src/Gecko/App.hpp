@@ -16,7 +16,7 @@ namespace Gecko
     public:
         App();
 
-        ~App();
+        virtual ~App();
 
         void run();
 
@@ -28,6 +28,6 @@ namespace Gecko
         void setCamera(std::weak_ptr<Camera> camera);
 
     protected:
-        OgreBites::ApplicationContext* ctx;
+        OgreBites::ApplicationContext* context = nullptr;
     };
 }

@@ -15,9 +15,9 @@ int main()
     std::shared_ptr<Gecko::Scene> scene = std::make_shared<Gecko::Scene>(app->getRoot());
 
     // Add objects to scene.
-    std::shared_ptr<Gecko::Light> light = std::make_shared<Gecko::Light>(scene, "Light");
-    std::shared_ptr<Gecko::Camera> camera = std::make_shared<Gecko::Camera>(scene, "Camera");
-    std::shared_ptr<Gecko::GameObject> gameObject = std::make_shared<Gecko::GameObject>(scene, "robot.mesh");
+    std::shared_ptr<Gecko::Light> light = std::make_shared<Gecko::Light>(scene.get(), "Light #1");
+    std::shared_ptr<Gecko::Camera> camera = std::make_shared<Gecko::Camera>(scene.get(), "Camera #1");
+    std::shared_ptr<Gecko::GameObject> gameObject = std::make_shared<Gecko::GameObject>(scene.get(), "Robot #1", "robot.mesh");
 
     // Setup objects.
     camera->setPosition(Ogre::Vector3f(0.0f, 140.0f, 140.0f));

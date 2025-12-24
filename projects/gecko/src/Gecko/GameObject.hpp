@@ -9,16 +9,19 @@ namespace Gecko
     class GameObject
     {
     public:
-        GameObject(std::weak_ptr<Scene> scene, const std::string& name);
+        GameObject(Scene* scene, const std::string& name, const std::string& mesh);
 
-        ~GameObject();
+        virtual ~GameObject();
 
+        virtual void update(float time);
+
+        Ogre::SceneManager* getSceneManager() const;
         Ogre::Entity* getEntity() const;
         Ogre::SceneNode* getSceneNode() const;
 
     protected:
-        Ogre::SceneManager* sceneManager;
-        Ogre::Entity* entity;
-        Ogre::SceneNode* sceneNode;
+        Ogre::SceneManager* sceneManager = nullptr;
+        Ogre::Entity* entity = nullptr;
+        Ogre::SceneNode* sceneNode = nullptr;
     };
 }

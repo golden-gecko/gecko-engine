@@ -27,7 +27,7 @@ namespace Gecko
     public:
         Input(size_t windowHandle);
 
-        ~Input();
+        virtual ~Input();
 
         void capture() const;
 

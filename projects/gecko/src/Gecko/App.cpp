@@ -10,25 +10,25 @@ namespace Gecko
 {
     App::App()
     {
-        ctx = new OgreBites::ApplicationContext();
-        ctx->initApp();
+        context = new OgreBites::ApplicationContext();
+        context->initApp();
 
-        if (ctx->getRoot()->restoreConfig() == false)
+        if (context->getRoot()->restoreConfig() == false)
         {
-            ctx->getRoot()->showConfigDialog(OgreBites::getNativeConfigDialog());
+            context->getRoot()->showConfigDialog(OgreBites::getNativeConfigDialog());
         }
 
-        ctx->getRoot()->addFrameListener(this);
+        context->getRoot()->addFrameListener(this);
     }
 
     App::~App()
     {
-        ctx->closeApp();
+        context->closeApp();
     }
 
     void App::run()
     {
-        ctx->getRoot()->startRendering();
+        context->getRoot()->startRendering();
     }
 
     bool App::frameStarted(const Ogre::FrameEvent& evt)
@@ -52,17 +52,17 @@ namespace Gecko
 
     OgreBites::ApplicationContext* App::getContext() const
     {
-        return ctx;
+        return context;
     }
 
     Ogre::Root* App::getRoot() const
     {
-        return ctx->getRoot();
+        return context->getRoot();
     }
 
     Ogre::RenderWindow* App::getRenderWindow() const
     {
-        return ctx->getRenderWindow();
+        return context->getRenderWindow();
     }
 
     size_t App::getRenderWindowHandle() const
@@ -76,6 +76,6 @@ namespace Gecko
 
     void App::setCamera(std::weak_ptr<Camera> camera)
     {
-        ctx->getRenderWindow()->addViewport(camera.lock()->getCamera())->setBackgroundColour(Ogre::ColourValue::White);
+        context->getRenderWindow()->addViewport(camera.lock()->getCamera())->setBackgroundColour(Ogre::ColourValue::White);
     }
 }

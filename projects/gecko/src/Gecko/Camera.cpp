@@ -8,16 +8,18 @@ Gecko::Camera* Ogre::Singleton<Gecko::Camera>::msSingleton = nullptr;
 
 namespace Gecko
 {
-    Camera::Camera(std::weak_ptr<Scene> scene, const std::string& name) : sceneManager(sceneManager)
+    Camera::Camera(Scene* scene, const std::string& name) : sceneManager(sceneManager)
     {
-        sceneManager = scene.lock()->getSceneManager();
+        sceneManager = scene->getSceneManager();
 
         camera = sceneManager->createCamera(name);
+        camera->getUserObjectBindings().setUserAny(Ogre::Any(this));
         camera->setNearClipDistance(5.0f);
         camera->setAutoAspectRatio(true);
 
         sceneNode = sceneManager->getRootSceneNode()->createChildSceneNode();
         sceneNode->attachObject(camera);
+        sceneNode->getUserObjectBindings().setUserAny(Ogre::Any(this));
         sceneNode->setFixedYawAxis(true, Ogre::Vector3f::UNIT_Y);
     }
 
@@ -27,9 +29,19 @@ namespace Gecko
         sceneManager->destroyCamera(camera);
     }
 
+    Ogre::SceneManager* Camera::getSceneManager() const
+    {
+        return sceneManager;
+    }
+
     Ogre::Camera* Camera::getCamera() const
     {
         return camera;
+    }
+
+    Ogre::SceneNode* Camera::getSceneNode() const
+    {
+        return sceneNode;
     }
 
     void Camera::setPosition(const Ogre::Vector3f& position)

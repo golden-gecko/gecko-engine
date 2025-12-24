@@ -9,34 +9,24 @@ namespace Gecko
 {
     Input::Input(size_t windowHandle)
     {
-        using namespace OIS;
+        OIS::ParamList pl;
 
-        ParamList pl;
+        std::ostringstream ss;
+        ss << windowHandle;
 
-        /*
-        //Create a capture window for Input Grabbing
-        hWnd = CreateDialog(nullptr, MAKEINTRESOURCE(IDD_DIALOG1), nullptr, (DLGPROC)DlgProc);
-        if (hWnd == nullptr)
-            OIS_EXCEPT(E_General, "Failed to create Win32 Window Dialog!");
+        pl.insert(std::make_pair("WINDOW", ss.str()));
 
-        ShowWindow(hWnd, SW_SHOW);
-        */
-
-        std::ostringstream wnd;
-        wnd << (size_t)windowHandle;
-
-        pl.insert(std::make_pair(std::string("WINDOW"), wnd.str()));
-
-        //Default mode is foreground exclusive..but, we want to show mouse - so nonexclusive
+        // Set mode to nonexclusive to show mouse.
         pl.insert(std::make_pair(std::string("w32_mouse"), std::string("DISCL_FOREGROUND")));
         pl.insert(std::make_pair(std::string("w32_mouse"), std::string("DISCL_NONEXCLUSIVE")));
 
-        //This never returns null.. it will raise an exception on errors
-        inputManager = InputManager::createInputSystem(pl);
+        // This never returns null.. it will raise an exception on errors
+        inputManager = OIS::InputManager::createInputSystem(pl);
 
         //Lets enable all addons that were compiled in:
-        inputManager->enableAddOnFactory(InputManager::AddOn_All);
+        inputManager->enableAddOnFactory(OIS::InputManager::AddOn_All);
 
+        /* TODO: Log this to file
         //Print debugging information
         unsigned int v = inputManager->getVersionNumber();
         std::cout << "OIS Version: " << (v >> 16) << "." << ((v >> 8) & 0x000000FF) << "." << (v & 0x000000FF)
@@ -51,28 +41,35 @@ namespace Gecko
         DeviceList list = inputManager->listFreeDevices();
         for (DeviceList::iterator i = list.begin(); i != list.end(); ++i)
             std::cout << "\n\tDevice: " << g_DeviceType[i->first] << " Vendor: " << i->second;
+        */
 
-        keyboard = (Keyboard*)inputManager->createInputObject(OISKeyboard, true);
+        keyboard = dynamic_cast<OIS::Keyboard*>(inputManager->createInputObject(OIS::OISKeyboard, true));
         keyboard->setEventCallback(this);
 
-        mouse = (Mouse*)inputManager->createInputObject(OISMouse, true);
+        mouse = dynamic_cast<OIS::Mouse*>(inputManager->createInputObject(OIS::OISMouse, true));
         mouse->setEventCallback(this);
-        const MouseState& ms = mouse->getMouseState();
+
+        // TODO: Set correct size.
+        const OIS::MouseState& ms = mouse->getMouseState();
+
         ms.width = 100;
         ms.height = 100;
 
-        //This demo uses at most 4 joysticks - use old way to create (i.e. disregard vendor)
-        int numSticks = std::min(inputManager->getNumberOfDevices(OISJoyStick), static_cast<int>(joysticks.size()));
+        // Create at most 4 joysticks (use old way to create i.e. disregard vendor).
+        int numSticks = std::min(inputManager->getNumberOfDevices(OIS::OISJoyStick), static_cast<int>(joysticks.size()));
         for (int i = 0; i < numSticks; ++i)
         {
-            joysticks[i] = (JoyStick*)inputManager->createInputObject(OISJoyStick, true);
+            joysticks[i] = dynamic_cast<OIS::JoyStick*>(inputManager->createInputObject(OIS::OISJoyStick, true));
             joysticks[i]->setEventCallback(this);
+            
+            /* TODO: Log this to file
             std::cout << "\n\nCreating Joystick " << (i + 1)
                 << "\n\tAxes: " << joysticks[i]->getNumberOfComponents(OIS_Axis)
                 << "\n\tSliders: " << joysticks[i]->getNumberOfComponents(OIS_Slider)
                 << "\n\tPOV/HATs: " << joysticks[i]->getNumberOfComponents(OIS_POV)
                 << "\n\tButtons: " << joysticks[i]->getNumberOfComponents(OIS_Button)
                 << "\n\tVector3: " << joysticks[i]->getNumberOfComponents(OIS_Vector3);
+            */
         }
     }
 
@@ -83,8 +80,15 @@ namespace Gecko
 
     void Input::capture() const
     {
-        keyboard->capture();
-        mouse->capture();
+        if (keyboard)
+        {
+            keyboard->capture();
+        }
+        
+        if (mouse)
+        {
+            mouse->capture();
+        }
 
         for (OIS::JoyStick* joystick : joysticks)
         {
@@ -97,12 +101,12 @@ namespace Gecko
 
     bool Input::isKeyDown(OIS::KeyCode key) const
     {
-        return keyboard->isKeyDown(key);
+        return keyboard ? keyboard->isKeyDown(key) : false;
     }
 
     bool Input::keyPressed(const OIS::KeyEvent& arg)
     {
-        std::cout << "keyPressed(" << arg.key << ")" << std::endl;
+        // std::cout << "keyPressed(" << arg.key << ")" << std::endl;
 
         if (arg.key == OIS::KeyCode::KC_UP)
         {
@@ -113,7 +117,7 @@ namespace Gecko
 
     bool Input::keyReleased(const OIS::KeyEvent& arg)
     {
-        std::cout << "keyReleased(" << arg.key << ")" << std::endl;
+        // std::cout << "keyReleased(" << arg.key << ")" << std::endl;
 
         if (arg.key == OIS::KeyCode::KC_ESCAPE || arg.key == OIS::KeyCode::KC_Q)
         {
@@ -126,9 +130,11 @@ namespace Gecko
     {
         const OIS::MouseState& s = arg.state;
 
+        /*
         std::cout << "\nMouseMoved: Abs("
             << s.X.abs << ", " << s.Y.abs << ", " << s.Z.abs << ") Rel("
             << s.X.rel << ", " << s.Y.rel << ", " << s.Z.rel << ")";
+        */
 
         Camera::getSingleton().rotate(Ogre::Degree(-arg.state.X.rel * 0.1f), Ogre::Degree(-arg.state.Y.rel * 0.1f));
 
@@ -139,9 +145,11 @@ namespace Gecko
     {
         const OIS::MouseState& s = arg.state;
 
+        /*
         std::cout << "\nMouse button #" << id << " pressed. Abs("
             << s.X.abs << ", " << s.Y.abs << ", " << s.Z.abs << ") Rel("
             << s.X.rel << ", " << s.Y.rel << ", " << s.Z.rel << ")";
+        */
 
         return true;
     }
@@ -150,23 +158,25 @@ namespace Gecko
     {
         const OIS::MouseState& s = arg.state;
 
+        /*
         std::cout << "\nMouse button #" << id << " released. Abs("
             << s.X.abs << ", " << s.Y.abs << ", " << s.Z.abs << ") Rel("
             << s.X.rel << ", " << s.Y.rel << ", " << s.Z.rel << ")";
+        */
 
         return true;
     }
 
     bool Input::buttonPressed(const OIS::JoyStickEvent& arg, int button)
     {
-        std::cout << arg.device->vendor() << ". Button Pressed # " << button;
+        // std::cout << arg.device->vendor() << ". Button Pressed # " << button;
 
         return true;
     }
 
     bool Input::buttonReleased(const OIS::JoyStickEvent& arg, int button)
     {
-        std::cout << arg.device->vendor() << ". Button Released # " << button;
+        // std::cout << arg.device->vendor() << ". Button Released # " << button;
 
         return true;
     }
@@ -175,7 +185,7 @@ namespace Gecko
     {
         if (arg.state.mAxes[axis].abs > 2500 || arg.state.mAxes[axis].abs < -2500)
         {
-            std::cout << arg.device->vendor() << ". Axis # " << axis << " Value: " << arg.state.mAxes[axis].abs;
+            // std::cout << arg.device->vendor() << ". Axis # " << axis << " Value: " << arg.state.mAxes[axis].abs;
         }
 
         return true;
@@ -183,10 +193,12 @@ namespace Gecko
 
     bool Input::sliderMoved(const OIS::JoyStickEvent& arg, int index)
     {
+        /*
         std::cout
             << arg.device->vendor() << ". Slider # " << index
             << " X Value: " << arg.state.mSliders[index].abX
             << " Y Value: " << arg.state.mSliders[index].abY;
+        */
 
         return true;
     }
@@ -197,25 +209,25 @@ namespace Gecko
 
         if (arg.state.mPOV[pov].direction & OIS::Pov::North)
         {
-            std::cout << "North";
+            // std::cout << "North";
         }
         else if (arg.state.mPOV[pov].direction & OIS::Pov::South)
         {
-            std::cout << "South";
+            // std::cout << "South";
         }
 
         if (arg.state.mPOV[pov].direction & OIS::Pov::East)
         {
-            std::cout << "East";
+            // std::cout << "East";
         }
         else if (arg.state.mPOV[pov].direction & OIS::Pov::West)
         {
-            std::cout << "West";
+            // std::cout << "West";
         }
 
         if (arg.state.mPOV[pov].direction == OIS::Pov::Centered)
         {
-            std::cout << "Centered";
+            // std::cout << "Centered";
         }
 
         return true;
@@ -223,11 +235,13 @@ namespace Gecko
 
     bool Input::vector3Moved(const OIS::JoyStickEvent& arg, int index)
     {
+        /*
         std::cout
             << arg.device->vendor() << ". Orientation # " << index
             << " X Value: " << arg.state.mVectors[index].x
             << " Y Value: " << arg.state.mVectors[index].y
             << " Z Value: " << arg.state.mVectors[index].z;
+        */
 
         return true;
     }

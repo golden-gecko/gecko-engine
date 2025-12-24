@@ -5,17 +5,17 @@
 
 namespace Gecko
 {
-    Light::Light(std::weak_ptr<Scene> scene, const std::string& name) : scene(scene)
+    Light::Light(Scene* scene, const std::string& name)
     {
-        sceneManager = scene.lock()->getSceneManager();
+        sceneManager = scene->getSceneManager();
 
         light = sceneManager->createLight(name);
-        light->setCastShadows(false);
+        light->setCastShadows(true);
         light->setType(Ogre::Light::LightTypes::LT_DIRECTIONAL);
 
         sceneNode = sceneManager->getRootSceneNode()->createChildSceneNode();
         sceneNode->attachObject(light);
-        sceneNode->lookAt(Ogre::Vector3f(-1.0f, -1.0f, -1.0f), Ogre::Node::TransformSpace::TS_PARENT);
+        sceneNode->lookAt(Ogre::Vector3f(-1.0f, -1.0f, -1.0f), Ogre::Node::TransformSpace::TS_WORLD);
     }
 
     Light::~Light()

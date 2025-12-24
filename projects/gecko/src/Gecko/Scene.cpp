@@ -11,6 +11,13 @@ namespace Gecko
         Ogre::RTShader::ShaderGenerator::getSingletonPtr()->addSceneManager(sceneManager);
     }
 
+    Scene::~Scene()
+    {
+        Ogre::RTShader::ShaderGenerator::getSingletonPtr()->removeSceneManager(sceneManager);
+
+        root->destroySceneManager(sceneManager);
+    }
+
     Ogre::Root* Scene::getRoot() const
     {
         return root;

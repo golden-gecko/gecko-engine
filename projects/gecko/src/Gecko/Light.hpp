@@ -9,15 +9,13 @@ namespace Gecko
     class Light
     {
     public:
-        Light(std::weak_ptr<Scene> scene, const std::string& name);
+        Light(Scene* scene, const std::string& name);
 
-        ~Light();
+        virtual ~Light();
 
     protected:
-        std::weak_ptr<Scene> scene;
-
-        Ogre::SceneManager* sceneManager;
-        Ogre::Light* light;
-        Ogre::SceneNode* sceneNode;
+        Ogre::SceneManager* sceneManager = nullptr;
+        Ogre::Light* light = nullptr;
+        Ogre::SceneNode* sceneNode = nullptr;
     };
 }
