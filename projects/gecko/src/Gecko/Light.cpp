@@ -1,7 +1,7 @@
-#include "PCH.hpp"
+#include "Gecko/PCH.hpp"
 
-#include "Light.hpp"
-#include "Scene.hpp"
+#include "Gecko/Light.hpp"
+#include "Gecko/Scene.hpp"
 
 namespace Gecko
 {

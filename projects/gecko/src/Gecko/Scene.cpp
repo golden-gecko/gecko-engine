@@ -1,6 +1,6 @@
-#include "PCH.hpp"
+#include "Gecko/PCH.hpp"
 
-#include "Scene.hpp"
+#include "Gecko/Scene.hpp"
 
 namespace Gecko
 {

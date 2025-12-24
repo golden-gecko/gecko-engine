@@ -1,8 +1,8 @@
-#include "PCH.hpp"
+#include "Gecko/PCH.hpp"
 
-#include "Camera.hpp"
-#include "Input.hpp"
-#include "Scene.hpp"
+#include "Gecko/Camera.hpp"
+#include "Gecko/Input.hpp"
+#include "Gecko/Scene.hpp"
 
 Gecko::Camera* Ogre::Singleton<Gecko::Camera>::msSingleton = nullptr;
 

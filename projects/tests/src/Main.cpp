@@ -1,11 +1,9 @@
-#include "PCH.hpp"
-
-#include "App.hpp"
-#include "Camera.hpp"
-#include "GameObject.hpp"
-#include "Input.hpp"
-#include "Light.hpp"
-#include "Scene.hpp"
+#include "Gecko/App.hpp"
+#include "Gecko/Camera.hpp"
+#include "Gecko/GameObject.hpp"
+#include "Gecko/Input.hpp"
+#include "Gecko/Light.hpp"
+#include "Gecko/Scene.hpp"
 
 int main()
 {

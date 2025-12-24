@@ -1,7 +1,7 @@
-#include "PCH.hpp"
+#include "Gecko/PCH.hpp"
 
-#include "GameObject.hpp"
-#include "Scene.hpp"
+#include "Gecko/GameObject.hpp"
+#include "Gecko/Scene.hpp"
 
 namespace Gecko
 {
