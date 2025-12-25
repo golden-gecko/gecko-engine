@@ -9,12 +9,13 @@ file(GLOB_RECURSE SOURCE_FILES ${PROJECT_SOURCE_DIR}/src/*.cpp)
 
 add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
 
-target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/../gecko/src)
-target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/lib/OIS/include)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/src)
+target_include_directories(${PROJECT_NAME} PUBLIC ${OIS_ROOT}/include/ois)
+target_include_directories(${PROJECT_NAME} PUBLIC ${GECKO_ROOT}/include)
 
 target_link_libraries(${PROJECT_NAME} OgreBites)
-target_link_libraries(${PROJECT_NAME} debug ${CMAKE_SOURCE_DIR}/lib/OIS/lib/OIS_d.lib optimized ${CMAKE_SOURCE_DIR}/lib/OIS/lib/OIS.lib)
-target_link_libraries(${PROJECT_NAME} debug ${CMAKE_SOURCE_DIR}/build/projects/gecko/Debug/Gecko.lib optimized ${CMAKE_SOURCE_DIR}/build/projects/gecko/Debug/Gecko.lib)
+target_link_libraries(${PROJECT_NAME} debug ${OIS_ROOT}/lib/OIS_d.lib optimized ${OIS_ROOT}/lib/OIS.lib)
+target_link_libraries(${PROJECT_NAME} debug ${GECKO_ROOT}/lib/Gecko_d.lib optimized ${GECKO_ROOT}/lib/Gecko.lib)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
     CXX_EXTENSIONS OFF

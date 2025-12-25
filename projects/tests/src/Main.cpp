@@ -5,6 +5,8 @@
 #include "Gecko/Light.hpp"
 #include "Gecko/Scene.hpp"
 
+#include <Ogre.h>
+
 int main()
 {
     // Create app.
