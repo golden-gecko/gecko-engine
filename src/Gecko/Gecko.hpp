@@ -1,19 +1,14 @@
 #pragma once
 
-#include <algorithm>
-#include <iostream>
-#include <map>
-#include <memory>
-#include <set>
-#include <string>
-#include <vector>
-
 #pragma warning(push, 0)
 
-#include <Ogre.h>
+#include <iostream>
 
 #include <Bites/OgreApplicationContext.h>
 #include <Bites/OgreBitesConfigDialog.h>
+
+#include <Ogre.h>
+#include <OgreRTShaderSystem.h>
 
 #include <OIS.h>
 

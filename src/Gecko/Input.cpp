@@ -1,5 +1,3 @@
-#include "Gecko/PCH.hpp"
-
 #include "Gecko/Camera.hpp"
 #include "Gecko/Input.hpp"
 

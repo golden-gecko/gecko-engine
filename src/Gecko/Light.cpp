@@ -1,5 +1,3 @@
-#include "Gecko/PCH.hpp"
-
 #include "Gecko/Light.hpp"
 #include "Gecko/Scene.hpp"
 
